@@ -18,18 +18,205 @@ Save and Document Results Capture screenshots of the waveform and save the simul
 # Code
 # Mealy 1011
 // Verilog code
+```verilog
+module mealy_fsm_1011(
+            input clk,rst,xin,
+            output reg zout
+        );
+        parameter [2:0] s1 = 3'b000,
+                        s2 = 3'b001,
+                        s3 = 3'b010,
+                        s4 = 3'b011;
+       reg [2:0] ps,ns;
+ always@(posedge clk)
+   begin
+      if(rst)
+          ps <= s1;
+      else
+          ps <= ns;
+   end      
+ always@(xin or ps)
+     begin 
+         case(ps)
+           s1 : if(xin) begin
+                     ns = s2;
+                     zout = 0;
+                 end             
+                else  begin
+                     ns = s1;
+                     zout = 0;
+                 end 
+           s2 : if(xin) begin
+                     ns = s2;
+                     zout = 0;
+                 end             
+                else  begin
+                     ns = s3;
+                     zout = 0;
+                 end             
+           s3 : if(xin) begin
+                     ns = s4;
+                     zout = 0;
+                 end             
+                else  begin
+                     ns = s1;
+                     zout = 0;
+                 end              
+           s4 : if(xin) begin
+                     ns = s1;
+                     zout = 1;
+                 end             
+                else  begin
+                     ns = s3;
+                     zout = 0;
+                 end              
+       endcase
+    end
+endmodule
+```
 
 // Test bench
+```verilog
+module mealy_fsm_1011_tb;
+        reg clk_t,rst_t,xin_t;
+        wire zout_t;
+        
+        mealy_fsm_1011 dut(.clk(clk_t),.rst(rst_t),.xin(xin_t),.zout(zout_t));
+           
+     initial
+        begin
+            clk_t = 1'b1;
+            rst_t = 1'b1;
+          #100
+            rst_t = 1'b0;
+            xin_t = 1'b1;
+          #100
+            xin_t = 1'b0;
+          #100
+            xin_t = 1'b1;
+          #100
+            xin_t = 1'b1;
+          #100
+            xin_t = 1'b1;
+          #100
+            xin_t = 1'b0;
+          #100
+            xin_t = 1'b1; 
+          #100
+           xin_t = 1'b1;              
+      end
+       always #50  clk_t = ~clk_t;                 
+endmodule
+```
 
 // output Waveform
+
+<img width="1920" height="1200" alt="Screenshot (43)" src="https://github.com/user-attachments/assets/543e2d18-d0a4-4edc-be86-cdbb34ad8b34" />
+
 # Moore 1011
-
-// write verilog code for ROM using $random
+```verilog
+module moore_fsm_1011(
+            input clk,rst,xin,
+            output reg zout
+        );
+        parameter [2:0] s1 = 3'b000,
+                        s2 = 3'b001,
+                        s3 = 3'b010,
+                        s4 = 3'b011,
+                        s5 = 3'b100; 
+       reg [2:0] ps,ns;
+ always@(posedge clk)
+   begin
+      if(rst)
+          ps <= s1;
+      else
+          ps <= ns;
+   end      
+ always@(xin or ps)
+     begin 
+         case(ps)
+           s1 : if(xin) begin
+                     ns = s2;
+                     zout = 0;
+                 end             
+                else  begin
+                     ns = s1;
+                     zout = 0;
+                 end 
+           s2 : if(xin) begin
+                     ns = s2;
+                     zout = 0;
+                 end             
+                else  begin
+                     ns = s3;
+                     zout = 0;
+                 end             
+           s3 : if(xin) begin
+                     ns = s4;
+                     zout = 0;
+                 end             
+                else  begin
+                     ns = s1;
+                     zout = 0;
+                 end              
+           s4 : if(xin) begin
+                     ns = s5;
+                     zout = 0;
+                 end             
+                else  begin
+                     ns = s3;
+                     zout = 0;
+                 end              
+           s5 : if(xin) begin
+                     ns = s2;
+                     zout = 1'b1;
+                 end             
+                else  begin
+                     ns = s1;
+                     zout = 1'b1;
+                 end 
+       endcase
+    end
+endmodule
+```
 
 // Test bench
+```verilog
+module moore_fsm_1011_tb;
+        reg clk_t,rst_t,xin_t;
+        wire zout_t;
+        
+        moore_fsm_1011 dut(.clk(clk_t),.rst(rst_t),.xin(xin_t),.zout(zout_t));
+           
+     initial
+        begin
+            clk_t = 1'b1;
+            rst_t = 1'b1;
+          #100
+            rst_t = 1'b0;
+            xin_t = 1'b1;
+          #100
+            xin_t = 1'b0;
+          #100
+            xin_t = 1'b1;
+          #100
+            xin_t = 1'b1;
+          #100
+            xin_t = 1'b1;
+          #100
+            xin_t = 1'b0;
+          #100
+            xin_t = 1'b1; 
+          #100
+           xin_t = 1'b1;              
+      end
+       always #50  clk_t = ~clk_t;                 
+endmodule
+```
 
 // output Waveform
 
+<img width="1920" height="1200" alt="Screenshot (44)" src="https://github.com/user-attachments/assets/0732ac4c-c899-4ee5-846c-18d7add1f878" />
 
 
 Conclusion
